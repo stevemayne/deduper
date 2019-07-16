@@ -130,13 +130,12 @@ def files_match(file1, file2):
 
 def dedupe(db, output_file, report_only=False):
     cursor = db.cursor()
-    update_cursor = db.cursor()
-    last_digest = ''
-    last_path = ''
     cursor.execute("select count(*) from file where hash <> ''")
     total = cursor.fetchone()[0]
     done = 0
     dupes = 0
+    last_digest = ''
+    last_path = ''
     cursor.execute('''select path, hash from file where hash <> '' order by hash, path''')
     for path, digest in ResultIter(cursor):
         if digest == last_digest:
